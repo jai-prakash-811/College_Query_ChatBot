@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marvel: Heroes</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Rajdhani:wght@500;700&display=swap');
+
+        :root {
+            --marvel-red: #EC1D24;
+            --panel-gap: 10px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #050505;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Rajdhani', sans-serif; /* Tech/Sci-fi font */
+            overflow: hidden;
+        }
+
+        /* Background Watermark */
+        .bg-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Bangers', cursive;
+            font-size: 25vw;
+            color: rgba(255, 255, 255, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            transition: all 0.5s ease;
+            z-index: 0;
+        }
+
+        .comic-container {
+            display: flex;
+            width: 90vw;
+            height: 80vh;
+            gap: var(--panel-gap);
+            z-index: 1;
+        }
+
+        .panel {
+            position: relative;
+            flex: 1;
+            border: 4px solid #000;
+            cursor: pointer;
+            transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow: hidden;
+            background: #000;
+            transform: skewX(-5deg); 
+        }
+
+        .panel-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: skewX(5deg) scale(1.2);
+        }
+
+        .panel-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.2) brightness(0.8);
+            transition: filter 0.6s, transform 0.2s;
+        }
+
+        /* Comic Dot Overlay */
+        .halftone-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, #000 2px, transparent 2.5px);
+            background-size: 6px 6px;
+            opacity: 0.4;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        /* --- THE NEW INFO CARD SECTION --- */
+        .hero-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.6) 80%, transparent);
+            color: #fff;
+            transform: translateY(100%); /* Hidden by default */
+            opacity: 0;
+            transition: all 0.5s ease 0.1s; /* Slight delay so it appears AFTER panel expands */
+        }
+
+        .hero-name {
+            font-family: 'Bangers', cursive;
+            font-size: 4rem;
+            color: #fff;
+            text-transform: uppercase;
+            line-height: 0.8;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(236, 29, 36, 0.5);
+        }
+
+        .real-name {
+            font-size: 1.2rem;
+            color: var(--marvel-red);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border-left: 3px solid #fff;
+            padding-left: 10px;
+        }
+
+        .bio {
+            font-size: 1rem;
+            line-height: 1.4;
+            max-width: 400px;
+            color: #ddd;
+            margin-bottom: 20px;
+            opacity: 0; /* Fade in separately */
+            transform: translateY(20px);
+            transition: all 0.5s ease 0.3s;
+        }
+
+        /* Power Stats Bars */
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease 0.4s;
+        }
+
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #888;
+        }
+
+        .stat-bar {
+            width: 60px;
+            height: 6px;
+            background: #333;
+            position: relative;
+            transform: skewX(-20deg); /* Tech look */
+        }
+
+        .stat-fill {
+            height: 100%;
+            background: var(--marvel-red);
+            box-shadow: 0 0 5px var(--marvel-red);
+            width: 0%; /* Animates to width on hover */
+            transition: width 1s ease 0.5s;
+        }
+
+        /* --- Hover States --- */
+        
+        .panel:hover {
+            flex: 3.5; 
+            border-color: var(--marvel-red);
+            z-index: 2;
+        }
+
+        .panel:hover .panel-img {
+            filter: grayscale(0%) contrast(1) brightness(1);
+        }
+
+        .panel:hover .halftone-overlay { opacity: 0; }
+
+        /* Reveal Info Card */
+        .panel:hover .hero-info {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .panel:hover .bio, 
+        .panel:hover .stats-container {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animate Bars based on variable */
+        .panel:hover .stat-fill {
+            width: var(--stat-width);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .comic-container { flex-direction: column; transform: none; }
+            .panel { transform: none; border-bottom: 2px solid #000;}
+            .panel-content { transform: none; }
+            .hero-name { font-size: 2.5rem; }
+            .bio { display: none; } /* Hide text on mobile to save space */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-text" id="bgText">MARVEL</div>
+
+    <div class="comic-container">
+        
+        <div class="panel" onmouseenter="changeBg('STARK')" onmouseleave="resetBg()">
+            <div class="panel-content">
+                <img src="https://images.unsplash.com/photo-1620509636650-f80e0c93540e?q=80&w=1000&auto=format&fit=crop" class="panel-img" alt="Iron Man">
+                <div class="halftone-overlay"></div>
+                
+                <div class="hero-info">
+                    <h2 class="hero-name">Iron Man</h2>
+                    <p class="real-name">Tony Stark</p>
+                    <p class="bio">Genius. Billionaire. Playboy. Philanthropist. The armored Avenger powered by the Arc Reactor.</p>
+                    
+                    <div class="stats-container">
+                        <div class="stat-box">
+                            <span class="stat-label">Tech</span>
+                            <div class="stat-bar"><div class="stat-fill" style="--stat-width: 100%"></div></div>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Flight</span>
+                            <div class="stat-bar"><div class="stat-fill" style="--stat-width: 90%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" onmouseenter="changeBg('SPIDEY')" onmouseleave="resetBg()">
+            <div class="panel-content">
+                <img src="https://images.unsplash.com/photo-1635805737707-575885ab0820?q=80&w=1000&auto=format&fit=crop" class="panel-img" alt="Spider Man">
+                <div class="halftone-overlay"></div>
+                
+                <div class="hero-info">
+                    <h2 class="hero-name">Spider-Man</h2>
+                    <p class="real-name">Peter Parker</p>
+                    <p class="bio">Your friendly neighborhood web-slinger. Agile reflexes and spidey-sense tingling.</p>
+                    
+                    <div class="stats-container">
+                        <div class="stat-box">
+                            <span class="stat-label">Agility</span>
+                            <div class="stat-bar"><div class="stat-fill" style="--stat-width: 100%"></div></div>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Strength</span>
+                            <div class="stat-bar"><div class="stat-fill" style="--stat-width: 70%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" onmouseenter="changeBg('ODINSON')" onmouseleave="resetBg()">
+            <div class="panel-content">
+                <img src="https://images.unsplash.com/photo-1598556851410-d021665a6c38?q=80&w=1000&auto=format&fit=crop" class="panel-img" alt="Thor">
+                <div class="halftone-overlay"></div>
+                
+                <div class="hero-info">
+                    <h2 class="hero-name">Thor</h2>
+                    <p class="real-name">God of Thunder</p>
+                    <p class="bio">Prince of Asgard. Wielder of Mjolnir. He brings the lightning and the thunder.</p>
+                    
+                    <div class="stats-container">
+                        <div class="stat-box">
+                            <span class="stat-label">Power</span>
+                            <div class="stat-bar"><div class="stat-fill" style="--stat-width: 100%"></div></div>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Durability</span>
+                            <div class="stat-bar"><div class="stat-fill" style="--stat-width: 95%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" onmouseenter="changeBg('ROMANOFF')" onmouseleave="resetBg()">
+            <div class="panel-content">
+                <img src="https://images.unsplash.com/photo-1535295972055-1c762f4483e5?q=80&w=1000&auto=format&fit=crop" class="panel-img" alt="Black Widow">
+                <div class="halftone-overlay"></div>
+                
+                <div class="hero-info">
+                    <h2 class="hero-name">Black Widow</h2>
+                    <p class="real-name">Natasha Romanoff</p>
+                    <p class="bio">Master spy and assassin. Founding member of the Avengers with a red ledger.</p>
+                    
+                    <div class="stats-container">
+                        <div class="stat-box">
+                            <span class="stat-label">Combat</span>
+                            <div class="stat-bar"><div class="stat-fill" style="--stat-width: 95%"></div></div>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Espionage</span>
+                            <div class="stat-bar"><div class="stat-fill" style="--stat-width: 100%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const bgText = document.getElementById('bgText');
+
+        function changeBg(name) {
+            bgText.innerText = name;
+            bgText.style.color = "rgba(236, 29, 36, 0.1)"; 
+            bgText.style.transform = "translate(-50%, -50%) scale(1.1)";
+        }
+
+        function resetBg() {
+            bgText.innerText = "MARVEL";
+            bgText.style.color = "rgba(255, 255, 255, 0.03)";
+            bgText.style.transform = "translate(-50%, -50%) scale(1)";
+        }
+
+        // Mouse Parallax Logic
+        document.querySelectorAll('.panel').forEach(panel => {
+            panel.addEventListener('mousemove', (e) => {
+                const img = panel.querySelector('.panel-img');
+                const x = (window.innerWidth - e.pageX * 2) / 50;
+                const y = (window.innerHeight - e.pageY * 2) / 50;
+                
+                if(panel.matches(':hover')) {
+                    img.style.transform = `scale(1.1) translateX(${x}px) translateY(${y}px)`;
+                }
+            });
+            
+            panel.addEventListener('mouseleave', () => {
+                const img = panel.querySelector('.panel-img');
+                img.style.transform = `scale(1) translateX(0) translateY(0)`;
+            })
+        });
+    </script>
+</body>
+</html>
