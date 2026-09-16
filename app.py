@@ -9,7 +9,7 @@ st.set_page_config(page_title="CampusGuide", page_icon="🎓", layout="wide", in
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-:root { --ink:#17202a; --muted:#66717d; --teal:#0d766d; --mint:#d9f0e9; --cream:#eef3f4; --line:#d6e0e1; }
+:root { --ink:#17202a; --muted:#66717d; --teal:#0d766d; --mint:#d9f0e9; --cream:#f5f7f9; --line:#dfe4e8; }
 html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; color: var(--ink); }
 .stApp { background: var(--cream); }
 [data-testid="stSidebar"] { background: #123b3a; }
@@ -18,7 +18,7 @@ html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; color: var(--in
 [data-testid="stSidebar"] .stButton button:hover { background: #1d514e; border-color: #83c6b6; }
 .hero { padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--line); }
 .eyebrow { color: var(--teal); text-transform: uppercase; letter-spacing: .12em; font-size: .72rem; font-weight: 700; }
-h1, h2, h3 { font-family: 'Space Grotesk', sans-serif !important; }
+h1, h2, h3 { font-family: 'Space Grotesk', sans-serif !important; color: var(--ink) !important; }
 h1 { font-size: clamp(2rem, 4vw, 3.4rem) !important; line-height: 1.05 !important; margin: .4rem 0 .7rem !important; }
 .subtitle { color: var(--muted); max-width: 610px; font-size: 1.05rem; }
 .metric { background: white; border: 1px solid var(--line); padding: 1rem; border-radius: 8px; }
