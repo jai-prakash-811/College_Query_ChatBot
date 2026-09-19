@@ -1,0 +1,38 @@
+[
+  {
+    "category": "Admissions",
+    "question": "How can I apply for admission?",
+    "keywords": ["admission", "apply", "application", "enroll", "प्रवेश", "दाखिला"],
+    "answer": "Admission ke liye college website par online application form bhariye, required documents upload kijiye aur application fee submit kijiye. Help ke liye Admissions Office: admissions@campusbuddy.edu par sampark karein."
+  },
+  {
+    "category": "Fees",
+    "question": "What is the B.Tech fee?",
+    "keywords": ["fee", "fees", "tuition", "cost", "btech", "engineering", "फीस", "शुल्क"],
+    "answer": "B.Tech ki annual tuition fee ₹85,000 hai. Exam, library aur university charges alag ho sakte hain. Latest fee structure Accounts Office se confirm karein."
+  },
+  {
+    "category": "Hostel",
+    "question": "Is hostel available?",
+    "keywords": ["hostel", "room", "accommodation", "mess", "रहना", "हॉस्टल"],
+    "answer": "Haan, boys aur girls dono ke liye campus hostel available hai. Hostel fee ₹60,000 per year hai, jisme basic Wi-Fi aur mess facility included hai."
+  },
+  {
+    "category": "Scholarships",
+    "question": "How do I get a scholarship?",
+    "keywords": ["scholarship", "financial", "freeship", "merit", "छात्रवृत्ति", "वजीफा"],
+    "answer": "Merit aur need-based scholarships available hain. Application ke liye marksheet, income certificate aur bank details Student Welfare Office mein submit karein."
+  },
+  {
+    "category": "Exams",
+    "question": "When are the semester exams?",
+    "keywords": ["exam", "exams", "semester", "date", "schedule", "परीक्षा", "इम्तिहान"],
+    "answer": "Semester exam timetable Student Portal ke Examination section mein publish hota hai. Usually exams semester ke end se do hafte pehle announce kiye jaate hain."
+  },
+  {
+    "category": "Contact",
+    "question": "How can I contact the college?",
+    "keywords": ["contact", "phone", "email", "office", "helpline", "संपर्क", "फोन"],
+    "answer": "General help desk: +91 98765 43210, email: helpdesk@campusbuddy.edu. Office hours Monday-Friday, 9:30 AM-5:00 PM hain."
+  }
+]
