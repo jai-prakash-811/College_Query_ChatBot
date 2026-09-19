@@ -1,5 +1,0 @@
-com\college\chatbot\controller\ChatController.class
-com\college\chatbot\CollegeChatbotApplication.class
-com\college\chatbot\dto\ChatRequest.class
-com\college\chatbot\service\ChatbotService.class
-com\college\chatbot\dto\ChatResponse.class
